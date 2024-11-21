@@ -42,7 +42,7 @@ This dual approach enables scalable, efficient solutions with flexibility across
 
 ### Prerequisites  
 - Python 3.x  
-- Libraries: `numpy`, `matplotlib`, `random`, `time`  
+- Libraries: `numpy`, `matplotlib`
 
 ### Steps  
 1. Clone the repository:  
