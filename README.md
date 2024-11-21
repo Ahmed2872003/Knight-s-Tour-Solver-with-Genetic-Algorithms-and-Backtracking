@@ -47,8 +47,8 @@ This dual approach enables scalable, efficient solutions with flexibility across
 ### Steps  
 1. Clone the repository:  
    ```bash  
-   git clone https://github.com/TIGER779/Knight-s-Tour-Solver-Genetic-Algorithm-with-Repair-Heuristics-and-Backtracking.git  
-   cd Knight-s-Tour-Solver-Genetic-Algorithm-with-Repair-Heuristics-and-Backtracking  
+   git clone https://github.com/Abdelrhman-Ramadan/Knight-s-Tour-Solver-with-Genetic-Algorithms-Repair-Heuristics-and-Backtracking.git  
+   cd Knight-s-Tour-Solver-with-Genetic-Algorithms-Repair-Heuristics-and-Backtracking  
    ```  
 2. Install dependencies:  
    ```bash  
