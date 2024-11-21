@@ -50,14 +50,10 @@ This dual approach enables scalable, efficient solutions with flexibility across
    git clone https://github.com/Abdelrhman-Ramadan/Knight-s-Tour-Solver-with-Genetic-Algorithms-Repair-Heuristics-and-Backtracking.git  
    cd Knight-s-Tour-Solver-with-Genetic-Algorithms-Repair-Heuristics-and-Backtracking  
    ```  
-2. Install dependencies:  
-   ```bash  
-   pip install -r requirements.txt  
-   ```  
 
 3. Run the main solver:  
    ```bash  
-   python knight_tour_solver.py  
+   python Knight_GUI.py  
    ```  
 
 ---
