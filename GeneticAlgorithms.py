@@ -130,12 +130,22 @@ class Genetic:
         return sorted(next_moves, key=lambda index: index[1])
 
     def select_parents(self, population, use_heuristic=False):
-        for i in range(self.population_size):
-            self.fitness_values.append(self.evaluate_fitness_matrix(population[i], use_heuristic))
+        
+        self.fitness_values = [self.evaluate_fitness_matrix(individual, use_heuristic) for individual in population]
+        
+        
         total_fitness = sum(self.fitness_values)
-        probabilities = [fitness / total_fitness for fitness in self.fitness_values]
+        if total_fitness == 0:
+
+            probabilities = [1 / len(population)] * len(population)
+        else:
+
+            probabilities = [fitness / total_fitness for fitness in self.fitness_values]
+        
+
         parents = random.choices(population, weights=probabilities, k=self.population_size)
         return parents
+
 
     def crossover(self, parent1, parent2):
         if random.random() > self.crossover_rate:

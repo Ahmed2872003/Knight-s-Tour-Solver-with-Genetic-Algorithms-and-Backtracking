@@ -4,9 +4,9 @@ from PIL import Image, ImageTk
 from tkinter import messagebox, ttk
 from GeneticAlgorithms import Genetic
 from knightsTourBackTracking_Warnsdorff import KnightsTour
-from KN_Backtracking_RandomizedHeuristic import KnightsTour_1
 import tkinter as tk
 from functools import partial
+import numpy as np;
 
 
 class GUI:
@@ -76,25 +76,19 @@ class GUI:
                                      font=('Bahnschrift SemiBold', 18), fg='#6f4518', bg='#d4a276')
         self.choose_label.grid(row=4, column=0, columnspan=4, pady=(20, 30))
 
-        algorithm_repair = partial(self.run_function, 'repair')
-        self.generate_button = tk.Button(self.controls_frame, text="GA With Repair", command=algorithm_repair,
-                                         font=('courier', 10), width=33)
-        self.generate_button.grid(row=9, column=0, padx=5)
+
+        algorithm_warnsdorff = partial(self.run_function, 'warnsdorff')
+        self.generate_button3 = tk.Button(self.controls_frame, text="Backtrack With Warnsdorff's Rule",
+                                         command=algorithm_warnsdorff, font=('courier', 10), width=33)
+        self.generate_button3.grid(row=9, column=0, padx=5)
+
 
         algorithm_heuristic = partial(self.run_function, 'heuristic')
         self.generate_button2 = tk.Button(self.controls_frame, text="GA With Heuristic", command=algorithm_heuristic,
                                           font=('courier', 10), width=33)
         self.generate_button2.grid(row=9, column=1, padx=5)
 
-        algorithm_warnsdorff = partial(self.run_function, 'warnsdorff')
-        self.generate_button3 = tk.Button(self.controls_frame, text="Backtrack With Warnsdorff's Rule",
-                                          command=algorithm_warnsdorff, font=('courier', 10), width=33)
-        self.generate_button3.grid(row=11, column=0, pady=5, padx=5)
 
-        algorithm_randomized = partial(self.run_function, 'randomized')
-        self.generate_button4 = tk.Button(self.controls_frame, text="Backtrack With Randomized",
-                                          command=algorithm_randomized, font=('courier', 10), width=33)
-        self.generate_button4.grid(row=11, column=1, pady=5, padx=5)
 
         # Label to display error messages
         self.result_label = tk.Label(self.controls_frame, text="", fg="red", bg='#d4a276', width=44)
@@ -174,7 +168,7 @@ class GUI:
         color = "#f3d5b5" if (row + col) % 2 == 0 else "#583101"
         self.knight_label.configure(bg=color)
         self.knight_label.grid(row=row, column=col)
-        self.after_id_Knight = self.root.after(583, self.colorthesquare, row, col)
+        self.after_id_Knight = self.root.after(100, self.colorthesquare, row, col)
 
     def colorthesquare(self, row, col):
         color = "#2c6e49"
@@ -192,25 +186,6 @@ class GUI:
             self.move_knight(self.chessboard_frame, self.best_path[index][0], self.best_path[index][1])
             self.after_id = self.root.after(500, self.animate_path_with_delay, chessboard_frame, self.best_path,
                                             index + 1)
-
-    # run algorithm
-    def genetic_with_repair(self):
-        self.obj = Genetic(self.N)
-        if self.N > 8:
-            self.obj.max_generations = 10000
-            self.obj.population_size = 500
-        self.obj.start_position = (self.X, self.Y)
-        self.start_time = time.time()
-        result = self.obj.run_genetic_algorithm()
-        if result:
-            self.best_path = result[3]
-            self.end_time = time.time()
-            self.GFS = result[1]
-            print(self.best_path)
-            self.popup_message('GA')
-            self.animate_path_with_delay(self.chessboard_frame, self.best_path)
-        else:
-            self.popup_message_NFS()
 
     def genetic_with_heuristic(self):
         self.obj = Genetic(self.N)
@@ -237,29 +212,19 @@ class GUI:
         self.end_time = time.time()
         self.best_path = self.obj.print_solution()
         print(self.best_path)
-        self.popup_message("")
-        self.animate_path_with_delay(self.chessboard_frame, self.best_path)
-
-    def backtrack_with_randomized(self):
-        self.obj = KnightsTour_1(self.N)
-        self.start_time = time.time()
-        self.obj.solve(self.X, self.Y)
-        self.end_time = time.time()
-        self.best_path = self.obj.print_solution()
-        print(self.best_path)
-        self.popup_message("")
+        
+        if(len(self.best_path) > 1):
+            self.popup_message("")
+        else:
+            self.popup_message_NFS()
         self.animate_path_with_delay(self.chessboard_frame, self.best_path)
 
     def run_function(self, type):
         self.create_chessboard()
-        if (type == 'repair'):
-            self.genetic_with_repair()
-        elif (type == 'heuristic'):
+        if (type == 'heuristic'):
             self.genetic_with_heuristic()
         elif (type == 'warnsdorff'):
             self.backtrack_with_warnsdorff()
-        elif (type == 'randomized'):
-            self.backtrack_with_randomized()
 
     def popup_message(self, type=""):
         if type == 'GA':
