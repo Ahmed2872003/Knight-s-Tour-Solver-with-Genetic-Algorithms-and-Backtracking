@@ -2,14 +2,13 @@ import random
 
 
 class Genetic:
-    def __init__(self, N=8, population_size=50, max_generations=100, crossover_rate=0.8, mutation_rate=0.01):
-        # Initialize Genetic Algorithm parameters
+    def __init__(self, N=8, start_position = (0, 0), population_size=50, max_generations=100, crossover_rate=0.8, mutation_rate=0.01):
         self.N = N
         self.population_size = population_size
         self.max_generations = max_generations
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
-        self.start_position = (0, 0)
+        self.start_position = start_position
         self.current_x = self.start_position[0]
         self.current_y = self.start_position[1]
         self.fitness_values = []
@@ -59,7 +58,7 @@ class Genetic:
         visited_board[self.current_x][self.current_y] = True
         num_legal_moves = 0
         for i in range(0, len(chromosome)):
-            legal, chromosome[i] = self.move_matrix(chromosome[i], visited_board, use_heuristic)
+            legal, chromosome[i] = self.move_matrix(chromosome[i], visited_board, use_heuristic)            
             if not legal:
                 return num_legal_moves
             else:
@@ -76,31 +75,20 @@ class Genetic:
             if not legal:
                 self.trace_back(move)
                 if use_heuristic:
+                    # Gets the next legal moves and their number of legal moves sorted according to 2nd index eg. (1, 5), 1: next legal move & 5: its number of legal moves
                     heuristic_moves = self.get_next_moves(self.current_x, self.current_y, board)
-                    best_move = self.get_first_non_zero_element(heuristic_moves)
-                    if best_move is None:
-                        return legal, move
-                    else:
-                        move = best_move
+
+                    best_move = heuristic_moves[0][0] if heuristic_moves else None
+                    
+                    move = best_move or move
                 else:
+                    # Gets the next move with random choice
                     move = (move % 8) + 1
+            else:
+                break
             limit += 1
         return legal, move
 
-    @staticmethod
-    def get_first_non_zero_element(my_list):
-        if not my_list:
-            return None
-
-        new_list = [tbl[1] for tbl in my_list]
-        first_non_zero_index = next((index for index, value in enumerate(new_list) if value != 0), None)
-
-        if first_non_zero_index is None:
-            return my_list[0][0]
-        elif first_non_zero_index == 0:
-            return my_list[0][0]
-        else:
-            return my_list[first_non_zero_index][0]
 
     def is_valid_move(self, x, y, board):
         legal = False
@@ -135,12 +123,9 @@ class Genetic:
         
         
         total_fitness = sum(self.fitness_values)
-        if total_fitness == 0:
 
-            probabilities = [1 / len(population)] * len(population)
-        else:
 
-            probabilities = [fitness / total_fitness for fitness in self.fitness_values]
+        probabilities =  [fitness / total_fitness for fitness in self.fitness_values] if total_fitness != 0 else None
         
 
         parents = random.choices(population, weights=probabilities, k=self.population_size)

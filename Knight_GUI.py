@@ -145,7 +145,7 @@ class GUI:
         new_gui = GUI()
         new_gui.run()
 
-    # Function to destroy the chessboard
+
     def destroy_chessboard(self):
         for widget in self.root.winfo_children():
             if isinstance(widget, tk.Frame):
@@ -188,13 +188,15 @@ class GUI:
                                             index + 1)
 
     def genetic_with_heuristic(self):
-        self.obj = Genetic(self.N)
+        self.obj = Genetic(self.N, (self.X, self.Y))
+        
         if self.N > 8:
             self.obj.max_generations = 10000
             self.obj.population_size = 500
-        self.obj.start_position = (self.X, self.Y)
+            
         self.start_time = time.time()
         result = self.obj.run_genetic_algorithm(use_heuristic=True)
+        
         if result:
             self.best_path = self.obj.run_genetic_algorithm(use_heuristic=True)[3]
             self.end_time = time.time()
@@ -250,6 +252,5 @@ class GUI:
         self.root.mainloop()
 
 
-# Create an instance of the GUI class and run the GUI
 gui = GUI()
 gui.run()
