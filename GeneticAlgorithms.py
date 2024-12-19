@@ -164,6 +164,7 @@ class Genetic:
             for chromosome in population:
                 value = self.evaluate_fitness_matrix(chromosome, use_heuristic)
                 self.fitness_values.append(value)
+
             best_fitness = max(self.fitness_values)
             max_index = self.fitness_values.index(best_fitness)
             print(f'Fittest Chromosome: {population[max_index]}')

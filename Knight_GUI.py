@@ -198,9 +198,8 @@ class GUI:
         result = self.obj.run_genetic_algorithm(use_heuristic=True)
         
         if result:
-            self.best_path = self.obj.run_genetic_algorithm(use_heuristic=True)[3]
+            _, self.GFS, _, self.best_path = result
             self.end_time = time.time()
-            self.GFS = self.obj.run_genetic_algorithm(use_heuristic=True)[1]
             print(self.best_path)
             self.popup_message('GA')
             self.animate_path_with_delay(self.chessboard_frame, self.best_path)
